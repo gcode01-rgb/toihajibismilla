@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Үйлену тойына шақыру / Wedding Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@300;400;500;600&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #faf6f0;
+            min-height: 100vh;
+            transition: direction 0.3s ease;
+        }
+        /* Араб тілі үшін қарипті баптау */
+        body[dir="rtl"] {
+            font-family: 'Amiri', serif;
+        }
+        body[dir="rtl"] .script-text, body[dir="rtl"] .section-hero h1, body[dir="rtl"] .node-time {
+            font-family: 'Amiri', serif;
+            font-style: italic;
+        }
+        
+        .wrapper {
+            width: 100%;
+            background-color: #faf6f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ТІЛ ТАНДАУ ПАНЕЛІ */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #dcd1bf;
+            padding: 4px 8px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 5px;
+        }
+        body[dir="rtl"] .language-switcher {
+            left: auto;
+            right: 20px;
+        }
+        body[dir="rtl"] .vinyl-player-container {
+            right: auto;
+            left: 20px;
+            flex-direction: row-reverse;
+            border-radius: 20px 50px 50px 20px;
+            padding: 10px 12px 10px 18px;
+        }
+        .lang-btn {
+            background: none;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 15px;
+            color: #4a3b2c;
+            transition: all 0.2s;
+        }
+        .lang-btn.active {
+            background-color: #8a7355;
+            color: #fff;
+        }
+
+        /* АЙНАЛАТЫН ДИСКІСІ БАР МУЗЫКА ПЛЕЕР */
+        .vinyl-player-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #dcd1bf;
+            padding: 10px 18px 10px 12px;
+            border-radius: 50px 20px 20px 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 270px;
+            height: 70px;
+        }
+        .vinyl-wrapper {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+        }
+        .vinyl-disk {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #333 30%, #111 60%, #000 100%);
+            box-shadow: inset 0 0 2px rgba(255,255,255,0.3), 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: rotateDisk 4s linear infinite;
+            animation-play-state: paused; 
+        }
+        .vinyl-center {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #8a7355;
+            color: #fff;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .vinyl-needle {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 14px;
+            height: 22px;
+            background: #4a3b2c;
+            clip-path: polygon(0 0, 100% 30%, 40% 100%, 0 60%);
+            transform-origin: top right;
+            transform: rotate(-20deg);
+            transition: transform 0.4s ease;
+            z-index: 5;
+        }
+        .vinyl-player-container.playing .vinyl-needle {
+            transform: rotate(5deg);
+        }
+        @keyframes rotateDisk {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex-grow: 1;
+        }
+        .track-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        body[dir="rtl"] .track-info {
+            text-align: right;
+        }
+        .track-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a3b2c;
+        }
+        .track-sub {
+            font-size: 9px;
+            color: #8a7355;
+            text-transform: uppercase;
+        }
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            color: #4a3b2c;
+        }
+        .play-btn {
+            background: #4a3b2c;
+            border: none;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* КОНТЕНТ СТИЛЬДЕРІ */
+        .script-text {
+            font-family: 'Marck Script', cursive;
+            color: #8a7355;
+            font-size: clamp(32px, 5vw, 48px);
+            line-height: 1.2;
+        }
+        /* Басты блокқа қатысты стильдер */
+.section-hero {
+    height: 85vh;
+    position: relative; /* Ішіндегі элементтерді реттеу үшін міндетті */
+    overflow: hidden; /* Видео шетінен шығып кетпеуі үшін */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+}
+
+/* Фондық видеоның стилі */
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 1; /* Видео ең артқы фонда тұрады */
+    transform: translate(-50%, -50%);
+    object-fit: cover; /* Суреттегі background-size: cover сияқты жұмыс істейді */
+}
+
+/* Видеоның бетін сәл қарайтып, мәтінді анық көрсету үшін қабат (Overlay) */
+.section-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.35); /* 0.35 - қараңғылық деңгейі (көбейтуге болады) */
+    z-index: 2; /* Видеодан жоғары, мәтіннен төмен */
+}
+
+/* Мәтіндер тұратын блок */
+.hero-content {
+    position: relative;
+    z-index: 3; /* Мәтін ең бетінде анық көрініп тұрады */
+    padding: 20px;
+}
+
+.section-hero h1 {
+    font-family: 'Marck Script', cursive;
+    font-size: clamp(40px, 6vw, 70px);
+    font-weight: 400;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+        .torn-border-top, .torn-border-bottom {
+            background: #faf6f0;
+            height: 25px;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+        .torn-border-top {
+            margin-top: -24px;
+            clip-path: polygon(0% 100%, 3% 85%, 6% 92%, 10% 80%, 13% 88%, 17% 75%, 21% 85%, 24% 78%, 28% 90%, 32% 82%, 35% 88%, 39% 75%, 43% 85%, 46% 80%, 50% 92%, 54% 83%, 58% 88%, 62% 76%, 65% 85%, 69% 79%, 73% 90%, 77% 82%, 80% 86%, 84% 75%, 88% 88%, 91% 81%, 95% 93%, 98% 84%, 100% 100%);
+        }
+        .torn-border-bottom {
+            margin-bottom: -24px;
+            clip-path: polygon(0% 0%, 3% 15%, 6% 8%, 10% 20%, 13% 12%, 17% 25%, 21% 15%, 24% 22%, 28% 10%, 32% 18%, 35% 12%, 39% 25%, 43% 15%, 46% 20%, 50% 8%, 54% 17%, 58% 12%, 62% 24%, 65% 15%, 69% 21%, 73% 10%, 77% 18%, 80% 14%, 84% 25%, 88% 12%, 91% 19%, 95% 7%, 98% 16%, 100% 0);
+        }
+        .section-invitation {
+            padding: 80px 20px;
+            background-color: #faf6f0;
+            text-align: center;
+            color: #4a3b2c;
+        }
+        .section-invitation p {
+            font-size: clamp(14px, 1.8vw, 18px);
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        .section-invitation .hosts {
+            font-size: clamp(14px, 1.6vw, 17px);
+            font-style: italic;
+            margin-top: 40px;
+            color: #8a7355;
+        }
+        .section-calendar {
+            background-color: #2b1f1d;
+            color: #fff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .section-calendar .script-text {
+            color: #dfcfb7;
+            margin-bottom: 35px;
+        }
+        .calendar-wrapper {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .calendar-days-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px 0;
+            font-size: 16px;
+        }
+        .cal-day {
+            padding: 8px;
+            position: relative;
+        }
+        .heart-date {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .heart-date::after {
+            content: '';
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            border: 2px solid #dfcfb7;
+            border-radius: 50%;
+            background-color: transparent;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px rgba(223, 207, 183, 0.4);
+        }
+        .heart-date span {
+            color: #dfcfb7 !important;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+        .section-rings {
+            height: 50vh;
+            min-height: 350px;
+            background: url('фон2.jpg') center/cover no-repeat;
+        }
+        .section-timeline {
+            padding: 80px 20px;
+            background-color: #faf6f0;
+            text-align: center;
+        }
+        .timeline-path {
+            position: relative;
+            max-width: 400px;
+            margin: 40px auto 20px;
+            padding-left: 20px;
+        }
+        body[dir="rtl"] .timeline-path {
+            padding-left: 0;
+            padding-right: 20px;
+        }
+        .timeline-path::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #8a7355 20%, transparent 20%, transparent 40%, #8a7355 40%, #8a7355 60%, transparent 60%, transparent 80%, #8a7355 80%);
+            background-size: 2px 15px;
+        }
+        body[dir="rtl"] .timeline-path::before {
+            left: auto;
+            right: 10px;
+        }
+        .timeline-node {
+            position: relative;
+            text-align: left;
+            margin-bottom: 50px;
+            padding-left: 30px;
+        }
+        body[dir="rtl"] .timeline-node {
+            text-align: right;
+            padding-left: 0;
+            padding-right: 30px;
+        }
+        .timeline-node::before {
+            content: '♥';
+            position: absolute;
+            left: -15px;
+            top: -2px;
+            color: #4a3b2c;
+            font-size: 16px;
+            background: #faf6f0;
+            padding: 0 4px;
+        }
+        body[dir="rtl"] .timeline-node::before {
+            left: auto;
+            right: -15px;
+        }
+        .node-time {
+            font-family: 'Marck Script', cursive;
+            font-size: 28px;
+            color: #4a3b2c;
+            font-weight: bold;
+        }
+        .node-text {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+            margin-top: 4px;
+        }
+        .dove-icon {
+            width: 70px;
+            opacity: 0.2;
+            margin: 30px auto 0;
+            display: block;
+        }
+        .section-countdown {
+            padding: 100px 20px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('кол2.jpg') center/cover no-repeat;
+            color: #fff;
+            text-align: center;
+        }
+        .countdown-title {
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            opacity: 0.9;
+        }
+        .timer-grid {
+            display: flex;
+            justify-content: space-around;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-direction: row;
+        }
+        body[dir="rtl"] .timer-grid {
+            flex-direction: row-reverse;
+        }
+        .timer-element .num {
+            font-family: 'Marck Script', cursive;
+            font-size: clamp(40px, 5vw, 64px);
+            display: block;
+            color: #dfcfb7;
+        }
+        .timer-element .label {
+            font-size: clamp(11px, 1.3vw, 14px);
+            opacity: 0.7;
+            text-transform: lowercase;
+        }
+        .section-location {
+            padding: 80px 20px;
+            text-align: center;
+            background-color: #faf6f0;
+        }
+        .palace-img {
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto;
+            display: block;
+            opacity: 0.95;
+            border-radius: 4px;
+        }
+        .location-title {
+            font-size: clamp(15px, 2vw, 20px);
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .maps-button {
+            display: inline-block;
+            background-color: #8a7355;
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 0.2s;
+        }
+        .maps-button:hover { transform: scale(1.05); }
+
+        .section-form {
+            padding: 60px 20px 100px;
+            background-color: #faf6f0;
+        }
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #eadecc;
+            border-radius: 8px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            text-align: center;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        .form-card h3 {
+            font-size: 15px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #4a3b2c;
+            margin-bottom: 30px;
+        }
+        .input-block {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        body[dir="rtl"] .input-block {
+            text-align: right;
+        }
+        .input-block label {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #777;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .input-block input[type="text"], .input-block textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dcd1bf;
+            background-color: #fdfcf9;
+            border-radius: 4px;
+            font-size: 15px;
+            color: #333;
+            outline: none;
+        }
+        .radio-option {
+            display: block;
+            position: relative;
+            padding: 14px;
+            border: 1px solid #eadecc;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            text-align: left;
+            font-size: 14px;
+            color: #4a3b2c;
+            cursor: pointer;
+            background: #fff;
+        }
+        body[dir="rtl"] .radio-option {
+            text-align: right;
+        }
+        .radio-option input {
+            margin-right: 12px;
+        }
+        body[dir="rtl"] .radio-option input {
+            margin-right: 0;
+            margin-left: 12px;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #1a1512;
+            color: #fff;
+            border: none;
+            padding: 16px;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover { background-color: #332722; }
+
+        .footer-brand {
+            text-align: center;
+            padding: 30px;
+            background-color: #121212;
+            color: #666;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+    </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('kk')">ҚАЗ</button>
+        <button class="lang-btn" onclick="switchLanguage('tr')">TÜR</button>
+        <button class="lang-btn" onclick="switchLanguage('ar')">عرب</button>
+    </div>
+
+    <div class="vinyl-player-container">
+        <div class="vinyl-wrapper">
+            <div class="vinyl-disk" id="vinylDisk">
+                <div class="vinyl-center">✨</div>
+            </div>
+            <div class="vinyl-needle" id="vinylNeedle"></div>
+        </div>
+        <div class="player-controls">
+            <div class="track-info">
+                <span class="track-title" id="musicStatus" data-key="track">Әуен 1</span>
+                <span class="track-sub" data-key="playlist_sub">Той әуендері</span>
+            </div>
+            <div class="control-buttons">
+                <button class="nav-btn" onclick="prevSong()">⏮️</button>
+                <button class="play-btn" onclick="togglePlay()" id="playPauseBtn">▶</button>
+                <button class="nav-btn" onclick="nextSong()">⏭️</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        
+        <div class="section-hero">
+    <video autoplay loop muted playsinline class="hero-video">
+        <source src="50be1094b036fead463e2c12fad6b5d7_720w.mp4" type="video/mp4">
+        Сіздің браузеріңіз видеоны қолдамайды.
+    </video>
+
+    <div class="hero-content">
+        <h1>Yahya & Malika</h1>
+        <span style="font-family: inherit; font-size: clamp(24px, 4vw, 36px); color: #dfcfb7; margin: 10px 0;" data-key="and">және</span>
+        <h1>Yasin & Amira</h1>
+        <p data-key="wedding_day">Wedding Day</p>
+    </div>
+</div>
+
+        <div class="torn-border-top"></div>
+
+        <div class="section-invitation" data-aos="fade-up" data-aos-duration="1000">
+            <div class="script-text" style="margin-bottom: 25px;" data-key="dear_guests">Құрметті қонақтар!</div>
+            <p data-key="invitation_to">АҒАЙЫН-ТУЫС, НАҒАШЫ-ЖИЕН, БӨЛЕЛЕР, ҚҰДА-ЖЕКЖАТ, ДОС-ЖАРАНДАР, ӘРІПТЕСТЕР ЖӘНЕ КӨРШІЛЕР!</p>
+            <p><h3 data-key="we_invite">Сіздерді</h3></p>
+            <div class="script-text" style="margin-bottom: 25px;">Yahya & Malika</div>
+            <span style="font-family: inherit; font-size: clamp(24px, 4vw, 36px); color: #353839; margin: 10px 0;" data-key="and">және</span>
+            <div class="script-text" style="margin-bottom: 25px;">Yasin & Amira</div>
+            <p data-key="invitation_text">ҮЙЛЕНУ ТОЙЫНА АРНАЛҒАН САЛТАНАТТЫ АҚ ДАСТАРХАНЫМЫЗДЫҢ ҚАДІРЛІ ҚОНАҒЫ БОЛУҒА ШАҚЫРАМЫЗ.</p>
+            <div class="hosts">
+                <span data-key="toy_owners"><strong>Toy иелері:</strong></span> Bismilla & Rahima
+            </div>
+        </div>
+
+        <div class="torn-border-top"></div>
+        
+        <div class="section-calendar" data-aos="fade-up" data-aos-duration="1000">
+            <div class="script-text" data-key="month">Тамыз</div>
+            <div class="calendar-wrapper">
+                <div class="calendar-days-header" id="calendarHeader">
+                    <div>дс</div><div>сс</div><div>ср</div><div>бс</div><div>жм</div><div>сн</div><div>жс</div>
+                </div>
+                <div class="calendar-grid">
+                    <div></div><div></div><div></div><div></div><div></div><div>1</div><div>2</div>
+                    <div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
+                    <div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div>
+                    <div>17</div><div>18</div><div>19</div>
+                    <div class="cal-day heart-date"><span>20</span></div>
+                    <div>21</div><div>22</div><div>23</div>
+                    <div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div>
+                    <div>31</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="torn-border-bottom"></div>
+
+        <div class="section-countdown" data-aos="fade-up" data-aos-duration="1000">
+            <div class="countdown-title" data-key="countdown_title">Тойға дейін:</div>
+            <div class="timer-grid" id="timerGrid">
+                <div class="timer-element"><span class="num" id="d_val">00</span><span class="label" data-key="days">күн</span></div>
+                <div class="timer-element"><span class="num" id="h_val">00</span><span class="label" data-key="hours">сағат</span></div>
+                <div class="timer-element"><span class="num" id="m_val">00</span><span class="label" data-key="minutes">минут</span></div>
+                <div class="timer-element"><span class="num" id="s_val">00</span><span class="label" data-key="seconds">секунд</span></div>
+            </div>
+        </div>
+
+        <div class="torn-border-bottom"></div>
+
+        <div class="section-timeline" data-aos="fade-up" data-aos-duration="1000">
+            <div class="script-text" style="font-size: 34px; margin-bottom: 20px;" data-key="program_title">Той бағдарламасы</div>
+            <div class="timeline-path">
+                <div class="timeline-node">
+                    <div class="node-time">18:00</div>
+                    <div class="node-text" data-key="prog_1">Қонақтардың жиналуы</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="node-time">19:00</div>
+                    <div class="node-text" data-key="prog_2">Тойдың басталуы</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="node-time">00:00</div>
+                    <div class="node-text" data-key="prog_3">Салтанатты кештің аяқталуы</div>
+                </div>
+            </div>
+            
+            <svg class="dove-icon" viewBox="0 0 24 24" fill="#8a7355">
+                <path d="M21.5,10.5C21,9.5 19.2,8.8 17.5,9.2C16.5,7.5 14,6.5 11,7C9.5,5.5 7.5,4.5 5,4.5C5.5,6.5 6.5,8.5 8,10C6.5,11.5 4.5,12.5 2,12C3.5,14 5.5,15.5 7.5,16C7,18.5 7.8,20.5 9,21.5C9.5,19 11,17 13,16C15.5,16.5 18,15.5 19.5,14C20.5,14.2 21.5,13.5 22,12.5C22.2,11.8 22,11.1 21.5,10.5Z"/>
+            </svg>
+        </div>
+
+        <div class="torn-border-top"></div>
+        <div class="section-rings"></div>
+        <div class="torn-border-top"></div>
+
+        <div class="section-location" data-aos="fade-up" data-aos-duration="1000">
+            <div class="script-text" style="font-size: 34px;" data-key="address_title">Мекен-жай:</div>
+            <div class="location-title" style="margin-top:15px; font-weight:600;" data-key="address_val">Ақтау қ., «Aq Saray» мейрамханасы</div>
+            <img class="palace-img" src="сарай.jpg" alt="Сарай">
+            <div style="font-style: italic; font-size: 14px; color: #666; margin-bottom: 25px;"><span data-key="toy_owners">Toy иелері:</span> Bismilla & Rahima</div>
+            <a href="https://2gis.kz/aktau/geo/70000001035890413" target="_blank" class="maps-button" data-key="view_map">🗺️ Картадан көру</a>
+        </div>
+
+        <div class="section-form" data-aos="fade-up" data-aos-duration="1000">
+            <div class="form-card">
+                <h3 data-key="form_title">Анкета</h3>
+                <div class="input-block">
+                    <label data-key="form_name">Aты-жөніңіз:</label>
+                    <input type="text" id="guest_name" placeholder="...">
+                </div>
+                
+                <div class="input-block">
+                    <label data-key="form_question">Тойға келесіз бе?</label>
+                    <label class="radio-option">
+                        <input type="radio" name="attending" value="Иә, әрине келемін" checked id="ans1"> <span data-key="ans_1">Иә, әрине келемін</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="attending" value="Тек жұбайыммен келемін" id="ans2"> <span data-key="ans_2">Тек жұбайыммен келемін</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="attending" value="Өкінішке орай, келе алмаймын" id="ans3"> <span data-key="ans_3">Келе алмаймын</span>
+                    </label>
+                </div>
+
+                <div class="input-block">
+                    <label data-key="form_wishes">Жұбайларға ақ тілек :</label>
+                    <textarea id="guest_wishes" rows="4" placeholder="..." style="font-family: inherit; resize: vertical;"></textarea>
+                </div>
+                
+                <button class="submit-btn" onclick="submitResponse()" data-key="form_send">Жіберу</button>
+
+                <div class="script-text" style="font-size: 26px; color: #8a7355; margin-top: 30px;" data-key="quote">
+                    «Балалардың жұмағы — өз үйлері»
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ТІЛДЕР СӨЗДІГІ
+        var translations = {
+            kk: {
+                track: "Әуен ", playlist_sub: "Той әуендері", and: "және", wedding_day: "Wedding Day",
+                dear_guests: "Құрметті қонақтар!", invitation_to: "АҒАЙЫН-ТУЫС, НАҒАШЫ-ЖИЕН, БӨЛЕЛЕР, ҚҰДА-ЖЕКЖАТ, ДОС-ЖАРАНДАР, ӘРІПТЕСТЕР ЖӘНЕ КӨРШІЛЕР!",
+                we_invite: "Сіздерді", invitation_text: "ҮЙЛЕНУ ТОЙЫНА АРНАЛҒАН САЛТАНАТТЫ АҚ ДАСТАРХАНЫМЫЗДЫҢ ҚАДІРЛІ ҚОНАҒЫ БОЛУҒА ШАҚЫРАМЫЗ.",
+                toy_owners: "Toy иелері:", month: "Тамыз", countdown_title: "Тойға дейін:", days: "күн", hours: "сағат", minutes: "минут", seconds: "секунд",
+                program_title: "Той бағдарламасы", prog_1: "Қонақтардың жиналуы", prog_2: "Тойдың басталуы", prog_3: "Салтанатты кештің аяқталуы",
+                address_title: "Мекен-жай:", address_val: "Ақтау қ., «Aq Saray» мейрамханасы", view_map: "🗺️ Картадан көру",
+                form_title: "Анкета", form_name: "Аты-жөніңіз:", form_question: "Тойға келесіз бе?", ans_1: "Иә, әрине келемін", ans_2: "Тек жұбайыммен келемін", ans_3: "Келе алмаймын",
+                form_wishes: "Жұбайларға ақ тілек :", form_send: "Жіберу", quote: "«Балалардың жұмағы — өз үйлері»",
+                days_short: ["дс", "сс", "ср", "бс", "жм", "сн", "жс"], alert_name: "Өтініш, аты-жөніңізді енгізіңіз!", placeholder_name: "Аты-жөніңізді енгізіңіз", placeholder_wishes: "Өз тілегіңізді осы жерге жазсаңыз болады..."
+            },
+            tr: {
+                track: "Müzik ", playlist_sub: "Düğün Şarkıları", and: "ve", wedding_day: "Düğün Günü",
+                dear_guests: "Sevgili Misafirler!", invitation_to: "AKRABALAR, DOSTLAR, ARKADAŞLAR, MESLEKTAŞLAR VE KOMŞULAR!",
+                we_invite: "Sizleri", invitation_text: "EVLİLİK TÖRENİMİZİN VE DÜĞÜNÜMÜZÜN ŞEREFLİ MİSAFİRİ OLMAYA DAVET EDİYORUZ.",
+                toy_owners: "Düğün Sahipleri:", month: "Ağustos", countdown_title: "Düğüne Kalan Süre:", days: "gün", hours: "saat", minutes: "dakika", seconds: "saniye",
+                program_title: "Düğün Programı", prog_1: "Misafirlerin Karşılanması", prog_2: "Düğün Başlangıcı", prog_3: "Kutlamanın Kapanışı",
+                address_title: "Adres:", address_val: "Aktau şehri, «Aq Saray» Restoranı", view_map: "🗺️ Haritada Gör",
+                form_title: "Katılım Formu", form_name: "Adınız Soyadınız:", form_question: "Düğüne katılıyor musunuz?", ans_1: "Evet, kesinlikle geliyorum", ans_2: "Sadece eşimle geliyorum", ans_3: "Maalesef katılamıyorum",
+                form_wishes: "Genç Çifte İyi Dilekleriniz:", form_send: "Gönder", quote: "«Çocukların cenneti yuvalarıdır»",
+                days_short: ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"], alert_name: "Lütfen adınızı giriniz!", placeholder_name: "Adınızı yazınız", placeholder_wishes: "Tebrik ve iyi dileklerinizi buraya yazabilirsiniz..."
+            },
+            ar: {
+                track: "الأغنية ", playlist_sub: "أغاني الزفاف", and: "و", wedding_day: "يوم الزفاف",
+                dear_guests: "ضيوفنا الأعزاء!", invitation_to: "الأقارب، الأصدقاء، الزملاء والجيران الكرام!",
+                we_invite: "ندعوكم", invitation_text: "لتشريفنا وحضور حفل زفافنا البهيج وتناول مأدبة العشاء.",
+                toy_owners: "أصحاب الحفل:", month: "أغسطس", countdown_title: "الوقت المتبقي للزفاف:", days: "يوم", hours: "ساعة", minutes: "دقيقة", seconds: "ثانية",
+                program_title: "برنامج الحفل", prog_1: "تجمع الضيوف", prog_2: "بدء الحفل السعيد", prog_3: "نهاية الحفل المبارك",
+                address_title: "العنوان:", address_val: "مدينة أقتاو، مطعم «Aq Saray»", view_map: "🗺️ عرض على الخريطة",
+                form_title: "استمارة الحضور", form_name: "الاسم الكامل:", form_question: "هل ستشرفنا بالحضور؟", ans_1: "نعم، بكل تأكيد سأحضر", ans_2: "سأحضر مع زوجتي فقط", ans_3: "للأسف، لا أستطيع الحضور",
+                form_wishes: "تهنئة ومباركة للعروسين:", form_send: "إرسال", quote: "«جنة الأطفال بيوتهم»",
+                days_short: ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"], alert_name: "يرجى إدخال الاسم الكامل!", placeholder_name: "أدخل اسمك هنا", placeholder_wishes: "اكتب تهنئتك الطيبة هنا..."
+            }
+        };
+
+        var currentLang = 'kk';
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            
+            // Батырмалардың белсенділігін өзгерту
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // RTL немесе LTR бағытын таңдау (Араб тілі үшін оңнан солға)
+            if (lang === 'ar') {
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.body.setAttribute('dir', 'ltr');
+            }
+
+            // Мәтіндерді ауыстыру
+            document.querySelectorAll('[data-key]').forEach(el => {
+                var key = el.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    if (key === 'track') {
+                        el.innerHTML = translations[lang][key] + (currentTrackIndex + 1);
+                    } else {
+                        el.innerHTML = translations[lang][key];
+                    }
+                }
+            });
+
+            // Календарь күндерінің атауын ауыстыру
+            var headerDivs = document.querySelectorAll('#calendarHeader div');
+            translations[lang].days_short.forEach((day, index) => {
+                if(headerDivs[index]) headerDivs[index].innerHTML = day;
+            });
+
+            // Инпуттардың ішкі мәтінін (placeholder) ауыстыру
+            document.getElementById('guest_name').placeholder = translations[lang].placeholder_name;
+            document.getElementById('guest_wishes').placeholder = translations[lang].placeholder_wishes;
+
+            // Анкета мәндерін жаңарту (WhatsApp-қа жіберілетін мәтін үшін)
+            document.getElementById('ans1').value = translations[lang].ans_1;
+            document.getElementById('ans2').value = translations[lang].ans_2;
+            document.getElementById('ans3').value = translations[lang].ans_3;
+        }
+
+        // МУЗЫКА ТІЗІМІ ЖӘНЕ АЙНАЛАТЫН ДИСК
+        var playlist = ["музыка1.mp3", "музыка2.mp3", "музыка3.mp3"];
+        var currentTrackIndex = 0;
+        var audioPlayer = new Audio(playlist[currentTrackIndex]);
+        audioPlayer.loop = true;
+
+        var playPauseBtn = document.getElementById('playPauseBtn');
+        var musicStatus = document.getElementById('musicStatus');
+        var vinylDisk = document.getElementById('vinylDisk');
+        var playerContainer = document.querySelector('.vinyl-player-container');
+
+        function updatePlayerUI() {
+            musicStatus.innerHTML = translations[currentLang].track + (currentTrackIndex + 1);
+            if (audioPlayer.paused) {
+                playPauseBtn.innerHTML = "▶";
+                vinylDisk.style.animationPlayState = 'paused';
+                playerContainer.classList.remove('playing');
+            } else {
+                playPauseBtn.innerHTML = "❚❚";
+                vinylDisk.style.animationPlayState = 'running';
+                playerContainer.classList.add('playing');
+            }
+        }
+
+        function togglePlay() {
+            if (audioPlayer.paused) { audioPlayer.play(); } else { audioPlayer.pause(); }
+            updatePlayerUI();
+        }
+
+        function changeTrack(index) {
+            var isPlaying = !audioPlayer.paused;
+            audioPlayer.pause();
+            currentTrackIndex = index;
+            if (currentTrackIndex >= playlist.length) currentTrackIndex = 0;
+            if (currentTrackIndex < 0) currentTrackIndex = playlist.length - 1;
+            audioPlayer = new Audio(playlist[currentTrackIndex]);
+            audioPlayer.loop = true;
+            if (isPlaying) audioPlayer.play();
+            updatePlayerUI();
+        }
+
+        function nextSong() { changeTrack(currentTrackIndex + 1); }
+        function prevSong() { changeTrack(currentTrackIndex - 1); }
+
+        // КЕРІ ЕСЕПТЕУ ТАЙМЕРІ (20 Тамыз 2026)
+        var targetDate = new Date("August 20, 2026 18:00:00").getTime();
+        var countdownInterval = setInterval(function() {
+            var today = new Date().getTime();
+            var diff = targetDate - today;
+            var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            var s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("d_val").innerHTML = d;
+            document.getElementById("h_val").innerHTML = h < 10 ? "0" + h : h;
+            document.getElementById("m_val").innerHTML = m < 10 ? "0" + m : m;
+            document.getElementById("s_val").innerHTML = s < 10 ? "0" + s : s;
+
+            if (diff < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("timerGrid").innerHTML = "Started!";
+            }
+        }, 1000);
+
+        // АНКЕТАНЫ WHATSAPP-ҚА ЖІБЕРУ
+        function submitResponse() {
+            var nameInput = document.getElementById('guest_name').value.trim();
+            var wishesInput = document.getElementById('guest_wishes').value.trim();
+            var radioGroup = document.getElementsByName('attending');
+            var selectedChoice = "";
+
+            for (var i = 0; i < radioGroup.length; i++) {
+                if (radioGroup[i].checked) {
+                    selectedChoice = radioGroup[i].value;
+                    break;
+                }
+            }
+
+            if (nameInput === "") {
+                alert(translations[currentLang].alert_name);
+                return;
+            }
+
+            var targetPhone = "77066200772"; 
+            var textMessage = `Language: ${currentLang.toUpperCase()}%0A%0A*Name:* ${nameInput}%0A*Answer:* ${selectedChoice}`;
+            if (wishesInput !== "") {
+                textMessage += `%0A*Wishes:* ${wishesInput}`;
+            }
+            
+            var finalUrl = `https://api.whatsapp.com/send?phone=${targetPhone}&text=${textMessage}`;
+            window.open(finalUrl, '_blank');
+        }
+
+        // Бастапқы іске қосу (placeholder мәндерін орнату үшін)
+        switchLanguage('kk');
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true, offset: 100 });</script>
+</body>
+</html>
