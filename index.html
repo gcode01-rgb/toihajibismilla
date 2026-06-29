@@ -51,6 +51,44 @@
             left: auto;
             right: 20px;
         }
+
+        /* ЖҰБАЙЛАРДЫ ТАҢДАУ БАТЫРМАЛАРЫ (ЕКІ БЕТКЕ БӨЛУ) */
+        .couple-switcher {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        body[dir="rtl"] .couple-switcher {
+            left: auto;
+            right: 20px;
+        }
+        .couple-btn {
+            background-color: #fff;
+            border: 1px solid #dcd1bf;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            color: #4a3b2c;
+        }
+        .couple-btn.active-couple1 {
+            background-color: #4a6b82;
+            color: #fff;
+            border-color: #4a6b82;
+        }
+        .couple-btn.active-couple2 {
+            background-color: #5a7d65;
+            color: #fff;
+            border-color: #5a7d65;
+        }
+
         body[dir="rtl"] .vinyl-player-container {
             right: auto;
             left: 20px;
@@ -165,30 +203,61 @@
             color: #8a7355;
             text-transform: uppercase;
         }
+        /* ПЛЕЕР БАТЫРМАЛАРЫНЫҢ ЖАҢА СТИЛЬДЕРІ */
         .control-buttons {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 4px;
         }
         .nav-btn {
             background: none;
             border: none;
-            font-size: 12px;
             cursor: pointer;
             color: #4a3b2c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            padding: 0;
+        }
+        .nav-btn:hover {
+            background-color: rgba(138, 115, 85, 0.15);
+            color: #8a7355;
+        }
+        .nav-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
         }
         .play-btn {
             background: #4a3b2c;
             border: none;
             color: #fff;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            font-size: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(74, 59, 44, 0.3);
+            padding: 0;
+        }
+        .play-btn:hover {
+            background-color: #8a7355;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(138, 115, 85, 0.4);
+        }
+        .play-btn svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
         }
 
         /* КОНТЕНТ СТИЛЬДЕРІ */
@@ -198,55 +267,52 @@
             font-size: clamp(32px, 5vw, 48px);
             line-height: 1.2;
         }
-        /* Басты блокқа қатысты стильдер */
-.section-hero {
-    height: 85vh;
-    position: relative; /* Ішіндегі элементтерді реттеу үшін міндетті */
-    overflow: hidden; /* Видео шетінен шығып кетпеуі үшін */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #fff;
-}
+        
+        .section-hero {
+            height: 85vh;
+            position: relative; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+        }
 
-/* Фондық видеоның стилі */
-.hero-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: 1; /* Видео ең артқы фонда тұрады */
-    transform: translate(-50%, -50%);
-    object-fit: cover; /* Суреттегі background-size: cover сияқты жұмыс істейді */
-}
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1; 
+            transform: translate(-50%, -50%);
+            object-fit: cover; 
+        }
 
-/* Видеоның бетін сәл қарайтып, мәтінді анық көрсету үшін қабат (Overlay) */
-.section-hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.35); /* 0.35 - қараңғылық деңгейі (көбейтуге болады) */
-    z-index: 2; /* Видеодан жоғары, мәтіннен төмен */
-}
+        .section-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.35); 
+            z-index: 2; 
+        }
 
-/* Мәтіндер тұратын блок */
-.hero-content {
-    position: relative;
-    z-index: 3; /* Мәтін ең бетінде анық көрініп тұрады */
-    padding: 20px;
-}
+        .hero-content {
+            position: relative;
+            z-index: 3; 
+            padding: 20px;
+        }
 
-.section-hero h1 {
-    font-family: 'Marck Script', cursive;
-    font-size: clamp(40px, 6vw, 70px);
-    font-weight: 400;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-}
+        .section-hero h1 {
+            font-family: 'Marck Script', cursive;
+            font-size: clamp(40px, 6vw, 70px);
+            font-weight: 400;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
         .torn-border-top, .torn-border-bottom {
             background: #faf6f0;
             height: 25px;
@@ -568,13 +634,12 @@
         }
         .submit-btn:hover { background-color: #332722; }
 
-        .footer-brand {
-            text-align: center;
-            padding: 30px;
-            background-color: #121212;
-            color: #666;
-            font-size: 13px;
-            letter-spacing: 1px;
+        /* Екі бөлек бетті көрсету және жасыру тетігі */
+        .couple-page {
+            display: none;
+        }
+        .couple-page.active-page {
+            display: block;
         }
     </style>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -585,6 +650,12 @@
         <button class="lang-btn active" onclick="switchLanguage('kk')">ҚАЗ</button>
         <button class="lang-btn" onclick="switchLanguage('tr')">TÜR</button>
         <button class="lang-btn" onclick="switchLanguage('ar')">عرب</button>
+    </div>
+
+    <!-- ЖҰБАЙЛАРДЫ АУЫСТЫРЫП КӨРУ ПАНЕЛІ (ЕКІ БӨЛЕК БЕТ) -->
+    <div class="couple-switcher">
+        <button class="couple-btn active-couple1" id="btnCouple1" onclick="showCouple(1)">Yahya & Malika</button>
+        <button class="couple-btn" id="btnCouple2" onclick="showCouple(2)">Yasin & Amira</button>
     </div>
 
     <div class="vinyl-player-container">
@@ -600,52 +671,51 @@
                 <span class="track-sub" data-key="playlist_sub">Той әуендері</span>
             </div>
             <div class="control-buttons">
-                <button class="nav-btn" onclick="prevSong()">⏮️</button>
-                <button class="play-btn" onclick="togglePlay()" id="playPauseBtn">▶</button>
-                <button class="nav-btn" onclick="nextSong()">⏭️</button>
+                <button class="nav-btn" onclick="prevSong()" title="Артқа">
+                    <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button class="play-btn" onclick="togglePlay()" id="playPauseBtn" title="Ойнату">
+                    <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <button class="nav-btn" onclick="nextSong()" title="Алға">
+                    <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zm-10.5 0v12l8.5-6z"/></svg>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="wrapper">
-        
+    <!-- ==================== БЕТ 1: YAHYA & MALIKA ==================== -->
+    <div id="pageCouple1" class="wrapper couple-page active-page">
         <div class="section-hero">
-    <video autoplay loop muted playsinline class="hero-video">
-        <source src="50be1094b036fead463e2c12fad6b5d7_720w.mp4" type="video/mp4">
-        Сіздің браузеріңіз видеоны қолдамайды.
-    </video>
-
-    <div class="hero-content">
-        <h1>Yahya & Malika</h1>
-        <span style="font-family: inherit; font-size: clamp(24px, 4vw, 36px); color: #dfcfb7; margin: 10px 0;" data-key="and">және</span>
-        <h1>Yasin & Amira</h1>
-        <p data-key="wedding_day">Wedding Day</p>
-    </div>
-</div>
+            <video autoplay loop muted playsinline class="hero-video">
+                <source src="50be1094b036fead463e2c12fad6b5d7_720w.mp4" type="video/mp4">
+                Сіздің браузеріңіз видеоны қолдамайды.
+            </video>
+            <div class="hero-content">
+                <h1>Yahya & Malika</h1>
+                <p data-key="wedding_day">Wedding Day</p>
+            </div>
+        </div>
 
         <div class="torn-border-top"></div>
 
-        <div class="section-invitation" data-aos="fade-up" data-aos-duration="1000">
+        <div class="section-invitation">
             <div class="script-text" style="margin-bottom: 25px;" data-key="dear_guests">Құрметті қонақтар!</div>
             <p data-key="invitation_to">АҒАЙЫН-ТУЫС, НАҒАШЫ-ЖИЕН, БӨЛЕЛЕР, ҚҰДА-ЖЕКЖАТ, ДОС-ЖАРАНДАР, ӘРІПТЕСТЕР ЖӘНЕ КӨРШІЛЕР!</p>
             <p><h3 data-key="we_invite">Сіздерді</h3></p>
             <div class="script-text" style="margin-bottom: 25px;">Yahya & Malika</div>
-            <span style="font-family: inherit; font-size: clamp(24px, 4vw, 36px); color: #353839; margin: 10px 0;" data-key="and">және</span>
-            <div class="script-text" style="margin-bottom: 25px;">Yasin & Amira</div>
             <p data-key="invitation_text">ҮЙЛЕНУ ТОЙЫНА АРНАЛҒАН САЛТАНАТТЫ АҚ ДАСТАРХАНЫМЫЗДЫҢ ҚАДІРЛІ ҚОНАҒЫ БОЛУҒА ШАҚЫРАМЫЗ.</p>
-                <span data-key="toy_owners"><strong>Toй иелері:</strong></span> Bismilla & Rahima
-                <P><span style="font-family: inherit; font-size: clamp(24px, 4vw, 36px); color: #353839; margin: 10px 0;" data-key="inlaws">Құдалар</span>
-            <div class="script-text" style="margin-bottom: 25px;">abdulmuhsin & suyut</div>
-            <div class="hosts">
-            </div></P>
+            <span data-key="toy_owners"><strong>Toй иелері:</strong></span> Bismilla & Rahima
+            <p><span style="font-family: inherit; font-size: clamp(24px, 4vw, 36px); color: #353839; margin: 10px 0;" data-key="inlaws">Құдалар</span></p>
+            <div class="script-text" style="margin-bottom: 25px;">Abdulmuhsin & Saud</div>
         </div>
 
+        <!-- Ортақ блоктар көшірмесі 1-бет үшін -->
         <div class="torn-border-top"></div>
-        
-        <div class="section-calendar" data-aos="fade-up" data-aos-duration="1000">
+        <div class="section-calendar">
             <div class="script-text" data-key="month">Тамыз</div>
             <div class="calendar-wrapper">
-                <div class="calendar-days-header" id="calendarHeader">
+                <div class="calendar-days-header classCalendarHeader">
                     <div>дс</div><div>сс</div><div>ср</div><div>бс</div><div>жм</div><div>сн</div><div>жс</div>
                 </div>
                 <div class="calendar-grid">
@@ -660,86 +730,153 @@
                 </div>
             </div>
         </div>
-
         <div class="torn-border-bottom"></div>
-
-        <div class="section-countdown" data-aos="fade-up" data-aos-duration="1000">
+        <div class="section-countdown">
             <div class="countdown-title" data-key="countdown_title">Тойға дейін:</div>
-            <div class="timer-grid" id="timerGrid">
-                <div class="timer-element"><span class="num" id="d_val">00</span><span class="label" data-key="days">күн</span></div>
-                <div class="timer-element"><span class="num" id="h_val">00</span><span class="label" data-key="hours">сағат</span></div>
-                <div class="timer-element"><span class="num" id="m_val">00</span><span class="label" data-key="minutes">минут</span></div>
-                <div class="timer-element"><span class="num" id="s_val">00</span><span class="label" data-key="seconds">секунд</span></div>
+            <div class="timer-grid">
+                <div class="timer-element"><span class="num c1-d">00</span><span class="label" data-key="days">күн</span></div>
+                <div class="timer-element"><span class="num c1-h">00</span><span class="label" data-key="hours">сағат</span></div>
+                <div class="timer-element"><span class="num c1-m">00</span><span class="label" data-key="minutes">минут</span></div>
+                <div class="timer-element"><span class="num c1-s">00</span><span class="label" data-key="seconds">секунд</span></div>
             </div>
         </div>
-
         <div class="torn-border-bottom"></div>
-
-        <div class="section-timeline" data-aos="fade-up" data-aos-duration="1000">
+        <div class="section-timeline">
             <div class="script-text" style="font-size: 34px; margin-bottom: 20px;" data-key="program_title">Той бағдарламасы</div>
             <div class="timeline-path">
-                <div class="timeline-node">
-                    <div class="node-time">18:00</div>
-                    <div class="node-text" data-key="prog_1">Қонақтардың жиналуы</div>
-                </div>
-                <div class="timeline-node">
-                    <div class="node-time">19:00</div>
-                    <div class="node-text" data-key="prog_2">Тойдың басталуы</div>
-                </div>
-                <div class="timeline-node">
-                    <div class="node-time">00:00</div>
-                    <div class="node-text" data-key="prog_3">Салтанатты кештің аяқталуы</div>
-                </div>
+                <div class="timeline-node"><div class="node-time">18:00</div><div class="node-text" data-key="prog_1">Қонақтардың жиналуы</div></div>
+                <div class="timeline-node"><div class="node-time">19:00</div><div class="node-text" data-key="prog_2">Тойдың басталуы</div></div>
+                <div class="timeline-node"><div class="node-time">00:00</div><div class="node-text" data-key="prog_3">Салтанатты кештің аяқталуы</div></div>
             </div>
-            
-            <svg class="dove-icon" viewBox="0 0 24 24" fill="#8a7355">
-                <path d="M21.5,10.5C21,9.5 19.2,8.8 17.5,9.2C16.5,7.5 14,6.5 11,7C9.5,5.5 7.5,4.5 5,4.5C5.5,6.5 6.5,8.5 8,10C6.5,11.5 4.5,12.5 2,12C3.5,14 5.5,15.5 7.5,16C7,18.5 7.8,20.5 9,21.5C9.5,19 11,17 13,16C15.5,16.5 18,15.5 19.5,14C20.5,14.2 21.5,13.5 22,12.5C22.2,11.8 22,11.1 21.5,10.5Z"/>
-            </svg>
         </div>
-
         <div class="torn-border-top"></div>
         <div class="section-rings"></div>
         <div class="torn-border-top"></div>
-
-        <div class="section-location" data-aos="fade-up" data-aos-duration="1000">
+        <div class="section-location">
             <div class="script-text" style="font-size: 34px;" data-key="address_title">Мекен-жай:</div>
             <div class="location-title" style="margin-top:15px; font-weight:600;" data-key="address_val">Ақтау қ., «Aq Saray» мейрамханасы</div>
             <img class="palace-img" src="сарай.jpg" alt="Сарай">
-            <div style="font-style: italic; font-size: 14px; color: #666; margin-bottom: 25px;"><span data-key="toy_owners">Toy иелері:</span> Bismilla & Rahima</div>
+            <div style="font-style: italic; font-size: 14px; color: #666; margin-bottom: 25px;"><span data-key="toy_owners">Toй иелері:</span> Bismilla & Rahima</div>
             <a href="https://2gis.kz/aktau/geo/70000001035890413" target="_blank" class="maps-button" data-key="view_map">🗺️ Картадан көру</a>
         </div>
-
-        <div class="section-form" data-aos="fade-up" data-aos-duration="1000">
+        <div class="section-form">
             <div class="form-card">
                 <h3 data-key="form_title">Анкета</h3>
                 <div class="input-block">
                     <label data-key="form_name">Aты-жөніңіз:</label>
-                    <input type="text" id="guest_name" placeholder="...">
+                    <input type="text" id="guest_name_1" placeholder="...">
                 </div>
-                
                 <div class="input-block">
                     <label data-key="form_question">Тойға келесіз бе?</label>
-                    <label class="radio-option">
-                        <input type="radio" name="attending" value="Иә, әрине келемін" checked id="ans1"> <span data-key="ans_1">Иә, әрине келемін</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="attending" value="Тек жұбайыммен келемін" id="ans2"> <span data-key="ans_2">Тек жұбайыммен келемін</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="attending" value="Өкінішке орай, келе алмаймын" id="ans3"> <span data-key="ans_3">Келе алмаймын</span>
-                    </label>
+                    <label class="radio-option"><input type="radio" name="attending_1" value="Иә, әрине келемін" checked id="ans1_1"> <span data-key="ans_1">Иә, әрине келемін</span></label>
+                    <label class="radio-option"><input type="radio" name="attending_1" value="Тек жұбайыммен келемін" id="ans2_1"> <span data-key="ans_2">Тек жұбайыммен келемін</span></label>
+                    <label class="radio-option"><input type="radio" name="attending_1" value="Өкінішке орай, келе алмаймын" id="ans3_1"> <span data-key="ans_3">Келе алмаймын</span></label>
                 </div>
-
                 <div class="input-block">
                     <label data-key="form_wishes">Жұбайларға ақ тілек :</label>
-                    <textarea id="guest_wishes" rows="4" placeholder="..." style="font-family: inherit; resize: vertical;"></textarea>
+                    <textarea id="guest_wishes_1" rows="4" placeholder="..." style="font-family: inherit; resize: vertical;"></textarea>
                 </div>
-                
-                <button class="submit-btn" onclick="submitResponse()" data-key="form_send">Жіберу</button>
+                <button class="submit-btn" onclick="submitResponse(1)" data-key="form_send">Жіберу</button>
+                <div class="script-text" style="font-size: 26px; color: #8a7355; margin-top: 30px;" data-key="quote">«Балалардың жұмағы — өз үйлері»</div>
+            </div>
+        </div>
+    </div>
 
-                <div class="script-text" style="font-size: 26px; color: #8a7355; margin-top: 30px;" data-key="quote">
-                    «Балалардың жұмағы — өз үйлері»
+
+    <!-- ==================== БЕТ 2: YASIN & AMIRA ==================== -->
+    <div id="pageCouple2" class="wrapper couple-page">
+        <div class="section-hero">
+            <video autoplay loop muted playsinline class="hero-video">
+                <source src="50be1094b036fead463e2c12fad6b5d7_720w.mp4" type="video/mp4">
+                Сіздің браузеріңіз видеоны қолдамайды.
+            </video>
+            <div class="hero-content">
+                <h1>Yasin & Amira</h1>
+                <p data-key="wedding_day">Wedding Day</p>
+            </div>
+        </div>
+
+        <div class="torn-border-top"></div>
+
+        <div class="section-invitation">
+            <div class="script-text" style="margin-bottom: 25px;" data-key="dear_guests">Құрметті қонақтар!</div>
+            <p data-key="invitation_to">АҒАЙЫН-ТУЫС, НАҒАШЫ-ЖИЕН, БӨЛЕЛЕР, ҚҰДА-ЖЕКЖАТ, ДОС-ЖАРАНДАР, ӘРІПТЕСТЕР ЖӘНЕ КӨРШІЛЕР!</p>
+            <p><h3 data-key="we_invite">Сіздерді</h3></p>
+            <div class="script-text" style="margin-bottom: 25px;">Yasin & Amira</div>
+            <p data-key="invitation_text">ҮЙЛЕНУ ТОЙЫНА АРНАЛҒАН САЛТАНАТТЫ АҚ ДАСТАРХАНЫМЫЗДЫҢ ҚАДІРЛІ ҚОНАҒЫ БОЛУҒА ШАҚЫРАМЫЗ.</p>
+            <span data-key="toy_owners"><strong>Toй иелері:</strong></span> Bismilla & Rahima
+            <p><span style="font-family: inherit; font-size: clamp(24px, 4vw, 36px); color: #353839; margin: 10px 0;" data-key="inlaws">Құдалар</span></p>
+            <div class="script-text" style="margin-bottom: 25px;">Abdulmuhsin & Saud</div>
+        </div>
+
+        <!-- Ортақ блоктар көшірмесі 2-бет үшін -->
+        <div class="torn-border-top"></div>
+        <div class="section-calendar">
+            <div class="script-text" data-key="month">Тамыз</div>
+            <div class="calendar-wrapper">
+                <div class="calendar-days-header classCalendarHeader">
+                    <div>дс</div><div>сс</div><div>ср</div><div>бс</div><div>жм</div><div>сн</div><div>жс</div>
                 </div>
+                <div class="calendar-grid">
+                    <div></div><div></div><div></div><div></div><div></div><div>1</div><div>2</div>
+                    <div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
+                    <div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div>
+                    <div>17</div><div>18</div><div>19</div>
+                    <div class="cal-day heart-date"><span>20</span></div>
+                    <div>21</div><div>22</div><div>23</div>
+                    <div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div>
+                    <div>31</div>
+                </div>
+            </div>
+        </div>
+        <div class="torn-border-bottom"></div>
+        <div class="section-countdown">
+            <div class="countdown-title" data-key="countdown_title">Тойға дейін:</div>
+            <div class="timer-grid">
+                <div class="timer-element"><span class="num c2-d">00</span><span class="label" data-key="days">күн</span></div>
+                <div class="timer-element"><span class="num c2-h">00</span><span class="label" data-key="hours">сағат</span></div>
+                <div class="timer-element"><span class="num c2-m">00</span><span class="label" data-key="minutes">минут</span></div>
+                <div class="timer-element"><span class="num c2-s">00</span><span class="label" data-key="seconds">секунд</span></div>
+            </div>
+        </div>
+        <div class="torn-border-bottom"></div>
+        <div class="section-timeline">
+            <div class="script-text" style="font-size: 34px; margin-bottom: 20px;" data-key="program_title">Той бағдарламасы</div>
+            <div class="timeline-path">
+                <div class="timeline-node"><div class="node-time">18:00</div><div class="node-text" data-key="prog_1">Қонақтардың жиналуы</div></div>
+                <div class="timeline-node"><div class="node-time">19:00</div><div class="node-text" data-key="prog_2">Тойдың басталуы</div></div>
+                <div class="timeline-node"><div class="node-time">00:00</div><div class="node-text" data-key="prog_3">Салтанатты кештің аяқталуы</div></div>
+            </div>
+        </div>
+        <div class="torn-border-top"></div>
+        <div class="section-rings"></div>
+        <div class="torn-border-top"></div>
+        <div class="section-location">
+            <div class="script-text" style="font-size: 34px;" data-key="address_title">Мекен-жай:</div>
+            <div class="location-title" style="margin-top:15px; font-weight:600;" data-key="address_val">Ақтау қ., «Aq Saray» мейрамханасы</div>
+            <img class="palace-img" src="сарай.jpg" alt="Сарай">
+            <div style="font-style: italic; font-size: 14px; color: #666; margin-bottom: 25px;"><span data-key="toy_owners">Toй иелері:</span> Bismilla & Rahima</div>
+            <a href="https://2gis.kz/aktau/geo/70000001035890413" target="_blank" class="maps-button" data-key="view_map">🗺️ Картадан көру</a>
+        </div>
+        <div class="section-form">
+            <div class="form-card">
+                <h3 data-key="form_title">Анкета</h3>
+                <div class="input-block">
+                    <label data-key="form_name">Aты-жөніңіз:</label>
+                    <input type="text" id="guest_name_2" placeholder="...">
+                </div>
+                <div class="input-block">
+                    <label data-key="form_question">Тойға келесіз бе?</label>
+                    <label class="radio-option"><input type="radio" name="attending_2" value="Иә, әрине келемін" checked id="ans1_2"> <span data-key="ans_1">Иә, әрине келемін</span></label>
+                    <label class="radio-option"><input type="radio" name="attending_2" value="Тек жұбайыммен келемін" id="ans2_2"> <span data-key="ans_2">Тек жұбайыммен келемін</span></label>
+                    <label class="radio-option"><input type="radio" name="attending_2" value="Өкінішке орай, келе алмаймын" id="ans3_2"> <span data-key="ans_3">Келе алмаймын</span></label>
+                </div>
+                <div class="input-block">
+                    <label data-key="form_wishes">Жұбайларға ақ тілек :</label>
+                    <textarea id="guest_wishes_2" rows="4" placeholder="..." style="font-family: inherit; resize: vertical;"></textarea>
+                </div>
+                <button class="submit-btn" onclick="submitResponse(2)" data-key="form_send">Жіберу</button>
+                <div class="script-text" style="font-size: 26px; color: #8a7355; margin-top: 30px;" data-key="quote">«Балалардың жұмағы — өз үйлері»</div>
             </div>
         </div>
     </div>
@@ -751,7 +888,7 @@
                 track: "Әуен ", playlist_sub: "Той әуендері", and: "және", wedding_day: "Wedding Day",
                 dear_guests: "Құрметті қонақтар!", invitation_to: "АҒАЙЫН-ТУЫС, НАҒАШЫ-ЖИЕН, БӨЛЕЛЕР, ҚҰДА-ЖЕКЖАТ, ДОС-ЖАРАНДАР, ӘРІПТЕСТЕР ЖӘНЕ КӨРШІЛЕР!",
                 we_invite: "Сіздерді", invitation_text: "ҮЙЛЕНУ ТОЙЫНА АРНАЛҒАН САЛТАНАТТЫ АҚ ДАСТАРХАНЫМЫЗДЫҢ ҚАДІРЛІ ҚОНАҒЫ БОЛУҒА ШАҚЫРАМЫЗ.", inlaws: "Құдалар",
-                toy_owners: "Toy иелері:", month: "Тамыз", countdown_title: "Тойға дейін:", days: "күн", hours: "сағат", minutes: "минут", seconds: "секунд",
+                toy_owners: "Toй иелері:", month: "Тамыз", countdown_title: "Тойға дейін:", days: "күн", hours: "сағат", minutes: "минут", seconds: "секунд",
                 program_title: "Той бағдарламасы", prog_1: "Қонақтардың жиналуы", prog_2: "Тойдың басталуы", prog_3: "Салтанатты кештің аяқталуы",
                 address_title: "Мекен-жай:", address_val: "Ақтау қ., «Aq Saray» мейрамханасы", view_map: "🗺️ Картадан көру",
                 form_title: "Анкета", form_name: "Аты-жөніңіз:", form_question: "Тойға келесіз бе?", ans_1: "Иә, әрине келемін", ans_2: "Тек жұбайыммен келемін", ans_3: "Келе алмаймын",
@@ -784,21 +921,34 @@
 
         var currentLang = 'kk';
 
+        // ЕКІ БЕТКЕ БӨЛУ ФУНКЦИЯСЫ
+        function showCouple(coupleNum) {
+            document.querySelectorAll('.couple-page').forEach(page => page.classList.remove('active-page'));
+            document.querySelectorAll('.couple-btn').forEach(btn => {
+                btn.classList.remove('active-couple1', 'active-couple2');
+            });
+
+            if (coupleNum === 1) {
+                document.getElementById('pageCouple1').classList.add('active-page');
+                document.getElementById('btnCouple1').classList.add('active-couple1');
+            } else {
+                document.getElementById('pageCouple2').classList.add('active-page');
+                document.getElementById('btnCouple2').classList.add('active-couple2');
+            }
+        }
+
         function switchLanguage(lang) {
             currentLang = lang;
             
-            // Батырмалардың белсенділігін өзгерту
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if(event) event.target.classList.add('active');
 
-            // RTL немесе LTR бағытын таңдау (Араб тілі үшін оңнан солға)
             if (lang === 'ar') {
                 document.body.setAttribute('dir', 'rtl');
             } else {
                 document.body.setAttribute('dir', 'ltr');
             }
 
-            // Мәтіндерді ауыстыру
             document.querySelectorAll('[data-key]').forEach(el => {
                 var key = el.getAttribute('data-key');
                 if (translations[lang][key]) {
@@ -810,23 +960,29 @@
                 }
             });
 
-            // Календарь күндерінің атауын ауыстыру
-            var headerDivs = document.querySelectorAll('#calendarHeader div');
-            translations[lang].days_short.forEach((day, index) => {
-                if(headerDivs[index]) headerDivs[index].innerHTML = day;
+            // Барлық календарь тақырыптарын жаңарту
+            document.querySelectorAll('.classCalendarHeader').forEach(header => {
+                var headerDivs = header.querySelectorAll('div');
+                translations[lang].days_short.forEach((day, index) => {
+                    if(headerDivs[index]) headerDivs[index].innerHTML = day;
+                });
             });
 
-            // Инпуттардың ішкі мәтінін (placeholder) ауыстыру
-            document.getElementById('guest_name').placeholder = translations[lang].placeholder_name;
-            document.getElementById('guest_wishes').placeholder = translations[lang].placeholder_wishes;
+            // Барлық инпуттарды жаңарту
+            document.getElementById('guest_name_1').placeholder = translations[lang].placeholder_name;
+            document.getElementById('guest_wishes_1').placeholder = translations[lang].placeholder_wishes;
+            document.getElementById('guest_name_2').placeholder = translations[lang].placeholder_name;
+            document.getElementById('guest_wishes_2').placeholder = translations[lang].placeholder_wishes;
 
-            // Анкета мәндерін жаңарту (WhatsApp-қа жіберілетін мәтін үшін)
-            document.getElementById('ans1').value = translations[lang].ans_1;
-            document.getElementById('ans2').value = translations[lang].ans_2;
-            document.getElementById('ans3').value = translations[lang].ans_3;
+            document.getElementById('ans1_1').value = translations[lang].ans_1;
+            document.getElementById('ans2_1').value = translations[lang].ans_2;
+            document.getElementById('ans3_1').value = translations[lang].ans_3;
+            document.getElementById('ans1_2').value = translations[lang].ans_1;
+            document.getElementById('ans2_2').value = translations[lang].ans_2;
+            document.getElementById('ans3_2').value = translations[lang].ans_3;
         }
 
-        // МУЗЫКА ТІЗІМІ ЖӘНЕ АЙНАЛАТЫН ДИСК
+        // МУЗЫКА ТІЗІМІ
         var playlist = ["музыка1.mp3", "музыка2.mp3", "музыка3.mp3"];
         var currentTrackIndex = 0;
         var audioPlayer = new Audio(playlist[currentTrackIndex]);
@@ -839,12 +995,16 @@
 
         function updatePlayerUI() {
             musicStatus.innerHTML = translations[currentLang].track + (currentTrackIndex + 1);
+            var playPauseBtn = document.getElementById('playPauseBtn');
+            
             if (audioPlayer.paused) {
-                playPauseBtn.innerHTML = "▶";
+                // Ойнату белгішесі (Түзу үшбұрыш)
+                playPauseBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
                 vinylDisk.style.animationPlayState = 'paused';
                 playerContainer.classList.remove('playing');
             } else {
-                playPauseBtn.innerHTML = "❚❚";
+                // Пауза белгішесі (Екі тік сызық)
+                playPauseBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
                 vinylDisk.style.animationPlayState = 'running';
                 playerContainer.classList.add('playing');
             }
@@ -870,7 +1030,7 @@
         function nextSong() { changeTrack(currentTrackIndex + 1); }
         function prevSong() { changeTrack(currentTrackIndex - 1); }
 
-        // КЕРІ ЕСЕПТЕУ ТАЙМЕРІ (20 Тамыз 2026)
+        // ТАЙМЕРЛЕРДІ ЖАҢАРТУ (20 Тамыз 2026)
         var targetDate = new Date("August 20, 2026 18:00:00").getTime();
         var countdownInterval = setInterval(function() {
             var today = new Date().getTime();
@@ -880,47 +1040,84 @@
             var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             var s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById("d_val").innerHTML = d;
-            document.getElementById("h_val").innerHTML = h < 10 ? "0" + h : h;
-            document.getElementById("m_val").innerHTML = m < 10 ? "0" + m : m;
-            document.getElementById("s_val").innerHTML = s < 10 ? "0" + s : s;
+            var hStr = h < 10 ? "0" + h : h;
+            var mStr = m < 10 ? "0" + m : m;
+            var sStr = s < 10 ? "0" + s : s;
+
+            // 1-бет таймері
+            document.querySelector(".c1-d").innerHTML = d;
+            document.querySelector(".c1-h").innerHTML = hStr;
+            document.querySelector(".c1-m").innerHTML = mStr;
+            document.querySelector(".c1-s").innerHTML = sStr;
+
+            // 2-бет таймері
+            document.querySelector(".c2-d").innerHTML = d;
+            document.querySelector(".c2-h").innerHTML = hStr;
+            document.querySelector(".c2-m").innerHTML = mStr;
+            document.querySelector(".c2-s").innerHTML = sStr;
 
             if (diff < 0) {
                 clearInterval(countdownInterval);
-                document.getElementById("timerGrid").innerHTML = "Started!";
             }
         }, 1000);
 
-        // АНКЕТАНЫ WHATSAPP-ҚА ЖІБЕРУ
-        function submitResponse() {
-            var nameInput = document.getElementById('guest_name').value.trim();
-            var wishesInput = document.getElementById('guest_wishes').value.trim();
-            var radioGroup = document.getElementsByName('attending');
-            var selectedChoice = "";
+        function submitResponse(pageId) {
+    var nameInput = document.getElementById('guest_name_' + pageId).value.trim();
+    var wishesInput = document.getElementById('guest_wishes_' + pageId).value.trim();
+    var radioGroup = document.getElementsByName('attending_' + pageId);
+    var selectedChoice = "";
+    var coupleNames = (pageId === 1) ? "Yahya & Malika" : "Yasin & Amira";
 
-            for (var i = 0; i < radioGroup.length; i++) {
-                if (radioGroup[i].checked) {
-                    selectedChoice = radioGroup[i].value;
-                    break;
-                }
-            }
-
-            if (nameInput === "") {
-                alert(translations[currentLang].alert_name);
-                return;
-            }
-
-            var targetPhone = "77066200772"; 
-            var textMessage = `Language: ${currentLang.toUpperCase()}%0A%0A*Name:* ${nameInput}%0A*Answer:* ${selectedChoice}`;
-            if (wishesInput !== "") {
-                textMessage += `%0A*Wishes:* ${wishesInput}`;
-            }
-            
-            var finalUrl = `https://api.whatsapp.com/send?phone=${targetPhone}&text=${textMessage}`;
-            window.open(finalUrl, '_blank');
+    for (var i = 0; i < radioGroup.length; i++) {
+        if (radioGroup[i].checked) {
+            selectedChoice = radioGroup[i].value;
+            break;
         }
+    }
 
-        // Бастапқы іске қосу (placeholder мәндерін орнату үшін)
+    if (nameInput === "") {
+        alert(translations[currentLang].alert_name);
+        return;
+    }
+
+    // ТЕЛЕГРАМ БОТ БАПТАУЛАРЫ
+    var botToken = "8961664045:AAE8iLOAFbv1RPCDYAFwTr9DE7ox7jF_H6I";
+    var chatId = "-1004421728386"; // Топтың немесе жеке ID
+
+    // Хабарлама мәтіні
+    var message = `🔔 *Жаңа анкета түсті!*\n\n` +
+                  `👤 *Қонақ:* ${nameInput}\n` +
+                  `❓ *Жауабы:* ${selectedChoice}\n` +
+                  `✍️ *Тілек:* ${wishesInput ? wishesInput : '-'}`;
+
+    // Тікелей Телеграмға сұраныс жіберу
+    var url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+    fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+            parse_mode: "Markdown"
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Жауабыңыз сәтті жіберілді! Рақмет!");
+            // Форманы тазалау
+            document.getElementById('guest_name_' + pageId).value = "";
+            document.getElementById('guest_wishes_' + pageId).value = "";
+        } else {
+            alert("Қателік орын алды, қайта байқап көріңіз.");
+        }
+    })
+    .catch(error => {
+        alert("Желіде қателік болды.");
+    });
+}
+
+        // Әдепкі баптаулар
         switchLanguage('kk');
     </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
